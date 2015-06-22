@@ -116,7 +116,7 @@ var Login = React.createClass({
   },
   render: function() {
     return (<div id="login">
-      <div id="login-show" onClick={ this.handleShowLogin } onTouchStart={ this.handleShowLogin }>Login</div>
+      <div id="login-show" onClick={ this.handleShowLogin } onTouchStart={ this.handleShowLogin }>Login.</div>
     </div>)
   }
 });
