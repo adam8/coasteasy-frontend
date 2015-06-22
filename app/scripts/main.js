@@ -116,7 +116,7 @@ var Login = React.createClass({displayName: "Login",
   },
   render: function() {
     return (React.createElement("div", {id: "login"}, 
-      React.createElement("div", {id: "login-show", onClick:  this.handleShowLogin, onTouchStart:  this.handleShowLogin}, "Login")
+      React.createElement("div", {id: "login-show", onClick:  this.handleShowLogin, onTouchStart:  this.handleShowLogin}, "Login.")
     ))
   }
 });
