@@ -1,0 +1,12 @@
+{
+  "name": "app",
+  "private": true,
+  "dependencies": {
+    "normalize.css": "~3.0.3",
+    "jquery": "~2.1.4",
+    "react": "~0.13.1",
+    "react-router": "~0.13.2",
+    "moment": "~2.9.0",
+    "pure": "~0.6.0"
+  }
+}

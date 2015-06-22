@@ -1,0 +1,15 @@
+{
+  "name": "react-swipeable",
+  "homepage": "https://github.com/dogfessional/react-swipeable",
+  "version": "2.1.0",
+  "_release": "2.1.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "v2.1.0",
+    "commit": "56c3103c95ceb9bdf3ae785248be2eb48337f354"
+  },
+  "_source": "https://github.com/dogfessional/react-swipeable.git",
+  "_target": "2.1.0",
+  "_originalSource": "https://github.com/dogfessional/react-swipeable.git",
+  "_direct": true
+}

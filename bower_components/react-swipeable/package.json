@@ -1,0 +1,32 @@
+{
+  "name": "react-swipeable",
+  "version": "2.1.0",
+  "description": "Swipe bindings for react",
+  "main": "Swipeable.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "swipe",
+    "flick",
+    "swipeable",
+    "react",
+    "web",
+    "mobile",
+    "ios",
+    "android",
+    "react-component"
+  ],
+  "author": "Josh Perez <josh@goatslacker.com>",
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/dogfessional/react-swipeable.git"
+  },
+  "license": "MIT",
+  "peerDependencies": {
+    "react": ">=0.12.x"
+  },
+  "dependencies": {
+    "object-assign": "^2.0.0"
+  }
+}

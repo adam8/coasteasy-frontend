@@ -1,0 +1,4 @@
+.tmp
+node_modules
+app/scripts/.module-cache
+.DS_Store
