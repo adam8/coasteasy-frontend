@@ -1,4 +1,4 @@
-//var socket = io.connect("https://coastconnect.ca:28015");
+//var socket = io.connect("https://coasteasy.com:28015");
 
 var isLocalHost = false;
 if (document.location.hostname == "localhost") {
@@ -251,7 +251,7 @@ var App = React.createClass({
     //this.getPosts();
     $.ajax({
       type: 'GET', 
-      url: 'https://coastconnect.ca/api/v1/posts',
+      url: 'https://coasteasy.com/api/v1/posts',
       success: function(data) {
         console.log('it worked posts: ',data);
         this.setState({ 
@@ -266,7 +266,7 @@ var App = React.createClass({
     if (docCookies.hasItem('token') && docCookies.hasItem('user_id')) {
       $.ajax({
         type: 'GET', 
-        url: 'https://coastconnect.ca/api/v1/users/' + docCookies.getItem('user_id'),
+        url: 'https://coasteasy.com/api/v1/users/' + docCookies.getItem('user_id'),
         headers: { 'x-api-token' : docCookies.getItem('token') },
         success: function(data) {
           console.log('it worked data',data);
@@ -353,7 +353,7 @@ var App = React.createClass({
     e.stopPropagation();
     $.ajax({
       type: 'POST', 
-      url: 'https://coastconnect.ca/api/v1/login',
+      url: 'https://coasteasy.com/api/v1/login',
       data: {
         email:$('#login-email').val(),
         password:$('#login-password').val()
@@ -362,10 +362,10 @@ var App = React.createClass({
         console.log('login success data',data);
         var cookieExpire = 60*60*24*14; // 14 days
         // TODO, make these SECURE only, the last flag should be true...
-        // docCookies.setItem('token', data.token, cookieExpire, '/', 'www.coastconnect.ca', true);
-        // docCookies.setItem('user_id', data.id, cookieExpire, '/', 'www.coastconnect.ca', true);
-        docCookies.setItem('token', data.token, cookieExpire, '/', 'www.coastconnect.ca');
-        docCookies.setItem('user_id', data.id, cookieExpire, '/', 'www.coastconnect.ca');
+        // docCookies.setItem('token', data.token, cookieExpire, '/', 'www.coasteasy.com', true);
+        // docCookies.setItem('user_id', data.id, cookieExpire, '/', 'www.coasteasy.com', true);
+        docCookies.setItem('token', data.token, cookieExpire, '/', 'coasteasy.com');
+        docCookies.setItem('user_id', data.id, cookieExpire, '/', 'coasteasy.com');
         this.setState({ 
           isLogin: true, 
           user_id: data.id
@@ -374,15 +374,15 @@ var App = React.createClass({
       error: function(data) {
         $('#login-email').focus();
         console.log('error');
-        $('#login-msg').html('Invalid email/password. <a href="mailto:info@coastconnect.ca">Need help?</a>');
+        $('#login-msg').html('Invalid email/password. <a href="mailto:adamjones.ca@gmail.com">Need help?</a>');
       }.bind(this)
     });
   },
   handleDoLogout: function(e) {
     e.preventDefault();
     e.stopPropagation();
-    docCookies.removeItem('token','/','www.coastconnect.ca');
-    docCookies.removeItem('user_id','/','www.coastconnect.ca');
+    docCookies.removeItem('token','/','coasteasy.com');
+    docCookies.removeItem('user_id','/','coasteasy.com');
     this.setState({
       isLogin: false
     });
