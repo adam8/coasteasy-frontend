@@ -1,4 +1,4 @@
-##  Coast Connect
+##  CoastEasy
 
 **Front End** 
 Work in progress
