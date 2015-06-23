@@ -148,7 +148,7 @@ var LoginPage = React.createClass({
                 <div><input type="password" id="login-password" placeholder="Your password" onChange={this.clearLoginMsg} required /></div>
                 <div id="login-form-actions">
                   <div id="login-submit-div">
-                    <input className="pure-button pure-button-primary" type="submit" id="login-submit" value="Log in" onClick= {this.handleDoLogin} />
+                    <input className="pure-button pure-button-primary" type="submit" id="login-submit" value="Log in" onClick={this.handleDoLogin} />
                   </div> 
                   <div id="login-cancel-div>">
                     <div id="login-cancel" className="pure-button button-transparent" onTouchStart={this.handleLoginCancel} onClick={this.handleLoginCancel}>Cancel</div>
@@ -436,7 +436,10 @@ var App = React.createClass({
           { this.state.isLogin === true ? <LogoutButton handleDoLogout={ this.handleDoLogout } /> : <LoginButton handleDoLogin={this.handleDoLogin} /> }
         </div>
           
-        <RouteHandler posts={this.state.posts} />
+        <RouteHandler 
+            posts={this.state.posts}
+            handleDoLogin={this.handleDoLogin}
+         />
           
       </div>
     );

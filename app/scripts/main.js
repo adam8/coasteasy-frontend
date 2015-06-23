@@ -436,7 +436,10 @@ var App = React.createClass({displayName: "App",
            this.state.isLogin === true ? React.createElement(LogoutButton, {handleDoLogout:  this.handleDoLogout}) : React.createElement(LoginButton, {handleDoLogin: this.handleDoLogin})
         ), 
           
-        React.createElement(RouteHandler, {posts: this.state.posts})
+        React.createElement(RouteHandler, {
+            posts: this.state.posts, 
+            handleDoLogin: this.handleDoLogin}
+         )
           
       )
     );
