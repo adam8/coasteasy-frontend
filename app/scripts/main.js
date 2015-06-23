@@ -125,7 +125,7 @@ var LogoutButton = React.createClass({displayName: "LogoutButton",
   },
   render: function() {
     return (React.createElement("div", {id: "logout", className: "logout", onClick: this.handleDoLogout}, 
-      React.createElement("a", {href: "#"}, "Log out")
+     this.props.user.name, " ", React.createElement("div", {className: "pure-button"}, "Log out")
     ))
   }
 });
@@ -300,7 +300,7 @@ var App = React.createClass({displayName: "App",
           console.log('it worked data',data);
           this.setState({ 
             isLogin: true, 
-            user_id: data.user_id
+            user: data.user
           });
         }.bind(this),
         error: function(data) {
@@ -388,17 +388,17 @@ var App = React.createClass({displayName: "App",
         var cookieExpire = 60*60*24*14; // 14 days
         // TODO, make these SECURE only, the last flag should be true...
         docCookies.setItem('token', data.token, cookieExpire, '/', 'coasteasy.com', true);
-        docCookies.setItem('user_id', data.id, cookieExpire, '/', 'coasteasy.com', true);
+        docCookies.setItem('user_id', data.user.id, cookieExpire, '/', 'coasteasy.com', true);
         this.setState({ 
           isLogin: true, 
-          user_id: data.id
+          user: data.user
         });
         this.transitionTo('/');
       }.bind(this),
       error: function(data) {
         $('#login-email').focus();
         console.log('error');
-        $('#login-msg').html('Invalid email/password. <a href="mailto:adamjones.ca@gmail.com">Need help?</a>');
+        $('#login-msg').html('Invalid email/password.<br /><a href="mailto:adamjones.ca@gmail.com">Need help?</a>');
       }.bind(this)
     });
   },
@@ -423,7 +423,7 @@ var App = React.createClass({displayName: "App",
     return { 
       posts: [],
       isLogin: false,
-      user_id: false,
+      user: {},
       currentPage: ''
     };
   },
@@ -434,7 +434,7 @@ var App = React.createClass({displayName: "App",
       
         React.createElement("div", {id: "header", onClick: this.handleHeaderClick}, 
           React.createElement("div", {id: "logo"}, React.createElement("h1", null, React.createElement("a", {href: "/"}, "Coast Connect"))), 
-           this.state.isLogin === true ? React.createElement(LogoutButton, {handleDoLogout:  this.handleDoLogout}) : React.createElement(LoginButton, {handleDoLogin: this.handleDoLogin})
+           this.state.isLogin === true ? React.createElement(LogoutButton, {handleDoLogout:  this.handleDoLogout, user:  this.state.user}) : React.createElement(LoginButton, {handleDoLogin: this.handleDoLogin})
         ), 
           
         React.createElement(RouteHandler, {
