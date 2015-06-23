@@ -297,7 +297,7 @@ var App = React.createClass({displayName: "App",
         url: 'https://coasteasy.com/api/v1/users/' + docCookies.getItem('user_id'),
         headers: { 'x-api-token' : docCookies.getItem('token') },
         success: function(data) {
-          console.log('it worked data',data);
+          console.log('it worked data 123',data);
           this.setState({ 
             isLogin: true, 
             user: data.user
