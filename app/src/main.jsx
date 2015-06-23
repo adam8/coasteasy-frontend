@@ -422,7 +422,7 @@ var App = React.createClass({
     }
     return { 
       posts: [],
-      isLogin: false,
+      isLogin: isLogin,
       user: {},
       currentPage: ''
     };
