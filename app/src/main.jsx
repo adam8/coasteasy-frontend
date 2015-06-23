@@ -413,6 +413,12 @@ var App = React.createClass({
     this.transitionTo('/');
   },
   
+  handleGoHome: function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    this.transitionTo('/');
+  },
+  
   getInitialState: function() {
     
     if (docCookies.hasItem('token')) {
@@ -433,7 +439,7 @@ var App = React.createClass({
       <div id="content-container" className={ "page-" + this.state.currentPage + " login-" + this.state.isLogin }>
       
         <div id="header" onClick={this.handleHeaderClick}>
-          <div id="logo"><h1><a href="/">Coast Connect</a></h1></div>
+          <div id="logo"><h1><a href="/" onClick={this.handleGoHome} onTouchStart={this.handleGoHome}>Coast Connect</a></h1></div>
           { this.state.isLogin === true ? <LogoutButton handleDoLogout={ this.handleDoLogout } user={ this.state.user } /> : <LoginButton handleDoLogin={this.handleDoLogin} /> }
         </div>
           

@@ -413,6 +413,12 @@ var App = React.createClass({displayName: "App",
     this.transitionTo('/');
   },
   
+  handleGoHome: function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    this.transitionTo('/');
+  },
+  
   getInitialState: function() {
     
     if (docCookies.hasItem('token')) {
@@ -433,7 +439,7 @@ var App = React.createClass({displayName: "App",
       React.createElement("div", {id: "content-container", className:  "page-" + this.state.currentPage + " login-" + this.state.isLogin}, 
       
         React.createElement("div", {id: "header", onClick: this.handleHeaderClick}, 
-          React.createElement("div", {id: "logo"}, React.createElement("h1", null, React.createElement("a", {href: "/"}, "Coast Connect"))), 
+          React.createElement("div", {id: "logo"}, React.createElement("h1", null, React.createElement("a", {href: "/", onClick: this.handleGoHome, onTouchStart: this.handleGoHome}, "Coast Connect"))), 
            this.state.isLogin === true ? React.createElement(LogoutButton, {handleDoLogout:  this.handleDoLogout, user:  this.state.user}) : React.createElement(LoginButton, {handleDoLogin: this.handleDoLogin})
         ), 
           
