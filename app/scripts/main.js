@@ -11,8 +11,8 @@ if (document.location.hostname == "localhost") {
 // React Router
 var Router = ReactRouter;
 var Route = Router.Route;
-var DefaultRoute = Router.DefaultRoute;
 var Link = Router.Link;
+var DefaultRoute = Router.DefaultRoute;
 var Navigation = Router.Navigation;
 var RouteHandler = Router.RouteHandler;
 var PropTypes = React.PropTypes;
@@ -102,27 +102,24 @@ var docCookies = {
 
 /****** COMPONENTS *********/
 
-var Login = React.createClass({displayName: "Login",
-  handleDoLogin: function(e) {
-    this.props.handleDoLogin(e);
-  },
-  clearLoginMsg: function(e) {
-    $('#login-msg').empty();
-  },
+var LoginButton = React.createClass({displayName: "LoginButton",
+  mixins: [Router.State, Navigation],
   handleShowLogin: function(e) {
     console.log('handleShowLogin');
     e.preventDefault();
     e.stopPropagation();
-    this.props.handleShowLogin(e);
+    this.transitionTo('/login');
+    // document.getElementById("login-form").classList.toggle('div-show-block');
+    // document.getElementById("login-show").classList.toggle('div-show-hide');
   },
   render: function() {
     return (React.createElement("div", {id: "login"}, 
-      React.createElement("div", {id: "login-show", onClick:  this.handleShowLogin, onTouchStart:  this.handleShowLogin}, "Login.")
+      React.createElement("div", {className: "pure-button", id: "login-show", onClick:  this.handleShowLogin, onTouchStart:  this.handleShowLogin}, "Login")
     ))
   }
 });
 
-var Logout = React.createClass({displayName: "Logout",
+var LogoutButton = React.createClass({displayName: "LogoutButton",
   handleDoLogout: function(e) {
     this.props.handleDoLogout(e);
   },
@@ -131,6 +128,36 @@ var Logout = React.createClass({displayName: "Logout",
       React.createElement("a", {href: "#"}, "Log out")
     ))
   }
+});
+
+var LoginPage = React.createClass({displayName: "LoginPage",
+  mixins: [Router.State, Navigation],
+  handleDoLogin: function(e) {
+    this.props.handleDoLogin(e);
+  },
+  handleLoginCancel: function(e) {
+    this.transitionTo('/');
+  },
+  clearLoginMsg: function(e) {
+    $('#login-msg').empty();
+  },
+  render: function() {
+    return (React.createElement("form", {id: "login-form", className: "pure-form"}, 
+              React.createElement("div", {id: "login-form-inner"}, 
+                React.createElement("div", null, React.createElement("input", {type: "email", id: "login-email", name: "email", placeholder: "Your email", onChange: this.clearLoginMsg, required: true})), 
+                React.createElement("div", null, React.createElement("input", {type: "password", id: "login-password", placeholder: "Your password", onChange: this.clearLoginMsg, required: true})), 
+                React.createElement("div", {id: "login-form-actions"}, 
+                  React.createElement("div", {id: "login-submit-div"}, 
+                    React.createElement("input", {className: "pure-button pure-button-primary", type: "submit", id: "login-submit", value: "Log in", onClick: this.handleDoLogin})
+                  ), 
+                  React.createElement("div", {id: "login-cancel-div>"}, 
+                    React.createElement("div", {id: "login-cancel", className: "pure-button button-transparent", onTouchStart: this.handleLoginCancel, onClick: this.handleLoginCancel}, "Cancel")
+                  )
+                ), 
+                React.createElement("div", {id: "login-msg"})
+              )
+            )
+  )}
 });
 
 var Posts = React.createClass({displayName: "Posts", 
@@ -213,7 +240,7 @@ var App = React.createClass({displayName: "App",
         "date_added": 'Tue May 05 2015 19:33:51 GMT+00:00',
         "lat": 49.288028,
         "long": -122.865729
-      },
+      }
     ];
 
     if (this.isMounted()) {
@@ -282,26 +309,23 @@ var App = React.createClass({displayName: "App",
       });
     }
   },
-  
-  handleShowLogin: function(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    document.getElementById("login-form").classList.toggle('div-show-block');
-    document.getElementById("login-show").classList.toggle('div-show-hide');
-  },
 
   handleChangeRoute: function() {
-    console.log('change route');
-    // this.setState({
-    //   currentEvents: currentEvents,
-    //   activeCategory: activeCategory,
-    //   activePage: activePage,
-    //   activeHighPriority: activeHighPriority,
-    //   activeEventsTotal: activeEventsTotal,
-    //   isMap: isMap,
-    //   isList: isList
-    // }); 
+    var path = this.getPath();
+    var first = path.split("/")[0];
+    console.log('handleChangeRoute');
+    console.log('first: ', first);
+    this.setState({
+      currentPage: first
+      // activeCategory: activeCategory,
+      // activePage: activePage,
+      // activeHighPriority: activeHighPriority,
+      // activeEventsTotal: activeEventsTotal,
+      // isMap: isMap,
+      // isList: isList
+    });
   },
+  
   handleFlagItem: function(item,e) {
     e.preventDefault();
     e.stopPropagation();
@@ -398,24 +422,18 @@ var App = React.createClass({displayName: "App",
     return { 
       posts: [],
       isLogin: false,
-      user_id: false
+      user_id: false,
+      currentPage: ''
     };
   },
   
   render: function () {
     return (
-      React.createElement("div", {className:  "page-" + this.state.activePage + " login-" + this.state.isLogin}, 
+      React.createElement("div", {id: "content-container", className:  "page-" + this.state.currentPage + " login-" + this.state.isLogin}, 
       
         React.createElement("div", {id: "header", onClick: this.handleHeaderClick}, 
           React.createElement("div", {id: "logo"}, React.createElement("h1", null, React.createElement("a", {href: "/"}, "Coast Connect"))), 
-           this.state.isLogin === true ? React.createElement(Logout, {handleDoLogout:  this.handleDoLogout}) : React.createElement(Login, {handleShowLogin:  this.handleShowLogin, handleDoLogin: this.handleDoLogin})
-        ), 
-            
-        React.createElement("form", {id: "login-form"}, 
-          React.createElement("input", {type: "email", id: "login-email", name: "email", placeholder: "Your email", onChange: this.clearLoginMsg, required: true}), 
-          React.createElement("input", {type: "password", id: "login-password", placeholder: "Your password", onChange: this.clearLoginMsg, required: true}), 
-          React.createElement("input", {type: "submit", id: "login-submit", value: "Log in", onClick: this.handleDoLogin}), 
-          React.createElement("div", {id: "login-msg"})
+           this.state.isLogin === true ? React.createElement(LogoutButton, {handleDoLogout:  this.handleDoLogout}) : React.createElement(LoginButton, {handleDoLogin: this.handleDoLogin})
         ), 
           
         React.createElement(RouteHandler, {posts: this.state.posts})
@@ -431,10 +449,12 @@ var App = React.createClass({displayName: "App",
 
 var routes = (
   React.createElement(Route, {name: "home", handler: App, path: "/"}, 
+    React.createElement(Route, {name: "LoginPage", handler: LoginPage, path: "login"}), 
     React.createElement(DefaultRoute, {handler: Posts})
   ) 
 ); 
 
+// Router.run(routes, Router.HistoryLocation, function (Handler, state) {
 Router.run(routes, function (Handler, state) {
   React.render(React.createElement(Handler, null), document.getElementById('app')); 
 });

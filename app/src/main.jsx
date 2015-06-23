@@ -11,8 +11,8 @@ if (document.location.hostname == "localhost") {
 // React Router
 var Router = ReactRouter;
 var Route = Router.Route;
-var DefaultRoute = Router.DefaultRoute;
 var Link = Router.Link;
+var DefaultRoute = Router.DefaultRoute;
 var Navigation = Router.Navigation;
 var RouteHandler = Router.RouteHandler;
 var PropTypes = React.PropTypes;
@@ -102,27 +102,24 @@ var docCookies = {
 
 /****** COMPONENTS *********/
 
-var Login = React.createClass({
-  handleDoLogin: function(e) {
-    this.props.handleDoLogin(e);
-  },
-  clearLoginMsg: function(e) {
-    $('#login-msg').empty();
-  },
+var LoginButton = React.createClass({
+  mixins: [Router.State, Navigation],
   handleShowLogin: function(e) {
     console.log('handleShowLogin');
     e.preventDefault();
     e.stopPropagation();
-    this.props.handleShowLogin(e);
+    this.transitionTo('/login');
+    // document.getElementById("login-form").classList.toggle('div-show-block');
+    // document.getElementById("login-show").classList.toggle('div-show-hide');
   },
   render: function() {
     return (<div id="login">
-      <div id="login-show" onClick={ this.handleShowLogin } onTouchStart={ this.handleShowLogin }>Login.</div>
+      <div className="pure-button" id="login-show" onClick={ this.handleShowLogin } onTouchStart={ this.handleShowLogin }>Login</div>
     </div>)
   }
 });
 
-var Logout = React.createClass({
+var LogoutButton = React.createClass({
   handleDoLogout: function(e) {
     this.props.handleDoLogout(e);
   },
@@ -131,6 +128,36 @@ var Logout = React.createClass({
       <a href="#">Log out</a>
     </div>)
   }
+});
+
+var LoginPage = React.createClass({
+  mixins: [Router.State, Navigation],
+  handleDoLogin: function(e) {
+    this.props.handleDoLogin(e);
+  },
+  handleLoginCancel: function(e) {
+    this.transitionTo('/');
+  },
+  clearLoginMsg: function(e) {
+    $('#login-msg').empty();
+  },
+  render: function() {
+    return (<form id="login-form" className="pure-form"> 
+              <div id="login-form-inner">
+                <div><input type="email" id="login-email" name="email" placeholder="Your email" onChange={this.clearLoginMsg} required /></div>
+                <div><input type="password" id="login-password" placeholder="Your password" onChange={this.clearLoginMsg} required /></div>
+                <div id="login-form-actions">
+                  <div id="login-submit-div">
+                    <input className="pure-button pure-button-primary" type="submit" id="login-submit" value="Log in" onClick= {this.handleDoLogin} />
+                  </div> 
+                  <div id="login-cancel-div>">
+                    <div id="login-cancel" className="pure-button button-transparent" onTouchStart={this.handleLoginCancel} onClick={this.handleLoginCancel}>Cancel</div>
+                  </div>
+                </div>
+                <div id="login-msg"></div>
+              </div>
+            </form>
+  )}
 });
 
 var Posts = React.createClass({ 
@@ -213,7 +240,7 @@ var App = React.createClass({
         "date_added": 'Tue May 05 2015 19:33:51 GMT+00:00',
         "lat": 49.288028,
         "long": -122.865729
-      },
+      }
     ];
 
     if (this.isMounted()) {
@@ -282,26 +309,23 @@ var App = React.createClass({
       });
     }
   },
-  
-  handleShowLogin: function(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    document.getElementById("login-form").classList.toggle('div-show-block');
-    document.getElementById("login-show").classList.toggle('div-show-hide');
-  },
 
   handleChangeRoute: function() {
-    console.log('change route');
-    // this.setState({
-    //   currentEvents: currentEvents,
-    //   activeCategory: activeCategory,
-    //   activePage: activePage,
-    //   activeHighPriority: activeHighPriority,
-    //   activeEventsTotal: activeEventsTotal,
-    //   isMap: isMap,
-    //   isList: isList
-    // }); 
+    var path = this.getPath();
+    var first = path.split("/")[0];
+    console.log('handleChangeRoute');
+    console.log('first: ', first);
+    this.setState({
+      currentPage: first
+      // activeCategory: activeCategory,
+      // activePage: activePage,
+      // activeHighPriority: activeHighPriority,
+      // activeEventsTotal: activeEventsTotal,
+      // isMap: isMap,
+      // isList: isList
+    });
   },
+  
   handleFlagItem: function(item,e) {
     e.preventDefault();
     e.stopPropagation();
@@ -398,25 +422,19 @@ var App = React.createClass({
     return { 
       posts: [],
       isLogin: false,
-      user_id: false
+      user_id: false,
+      currentPage: ''
     };
   },
   
   render: function () {
     return (
-      <div className={ "page-" + this.state.activePage + " login-" + this.state.isLogin }>
+      <div id="content-container" className={ "page-" + this.state.currentPage + " login-" + this.state.isLogin }>
       
         <div id="header" onClick={this.handleHeaderClick}>
           <div id="logo"><h1><a href="/">Coast Connect</a></h1></div>
-          { this.state.isLogin === true ? <Logout handleDoLogout={ this.handleDoLogout } /> : <Login handleShowLogin={ this.handleShowLogin } handleDoLogin={this.handleDoLogin} /> }
+          { this.state.isLogin === true ? <LogoutButton handleDoLogout={ this.handleDoLogout } /> : <LoginButton handleDoLogin={this.handleDoLogin} /> }
         </div>
-            
-        <form id="login-form"> 
-          <input type="email" id="login-email" name="email" placeholder="Your email" onChange={this.clearLoginMsg} required />
-          <input type="password" id="login-password" placeholder="Your password" onChange={this.clearLoginMsg} required />
-          <input type="submit" id="login-submit" value="Log in" onClick= {this.handleDoLogin} />
-          <div id="login-msg"></div>
-        </form>
           
         <RouteHandler posts={this.state.posts} />
           
@@ -431,10 +449,12 @@ var App = React.createClass({
 
 var routes = (
   <Route name="home" handler={App} path="/">
+    <Route name="LoginPage" handler={LoginPage} path="login" />
     <DefaultRoute handler={Posts}/>
   </Route> 
 ); 
 
+// Router.run(routes, Router.HistoryLocation, function (Handler, state) {
 Router.run(routes, function (Handler, state) {
   React.render(<Handler />, document.getElementById('app')); 
 });

@@ -34,7 +34,14 @@ body {
   padding: 0.2em 0;
 }
 
+#content-container {
+  
+}
+
 #header {
+  position: fixed;
+  top:0;
+  z-index: 999;
   width: 100%;
   padding: 3px 10px;
   height: 40px;
@@ -51,7 +58,7 @@ body {
 #header h1 a:visited { color: #000; text-decoration: none; }
 
 #logo {
-  flex: 2 1 50px;
+  flex: 5 1;
 }
 
 #logo a {
@@ -64,7 +71,9 @@ body {
 }
 
 #login {
-  flex: 2 1 auto;
+  flex: 1 0;
+  display: flex;
+  justify-content: flex-end;
 }
 
 #login h1 {
@@ -72,12 +81,28 @@ body {
   margin: auto;
 }
 #login-form {
+  /*height: calc(100vh - 40px);*/
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+#login-form-inner {
   margin: auto;
-  display: none;
+}
+#login-form-inner > div {
+  margin: 15px 0;
+}
+#login-form-actions {
+  display: flex;
 }
 
+#login-submit-div { flex: 5 1; }
+#login-cancel-div { flex: 1 0; }
+
+
 .posts-list {
-  padding: 10px 0;
+  padding: 40px 0 10px 0;
+  min-height: 100vh;
 }
 .posts-list h2 {
   margin:0;padding:0;
@@ -94,6 +119,12 @@ body {
 .div-show-hide { display: none!important; }
 
 
+.button-transparent {
+  background: transparent; /* this is a green */
+}
+.button-transparent:hover {
+  background: rgba(0,0,0,.05); /* this is a green */
+}
 
 @media screen and (min-width: 35.5em) {
   /* sm ≥ 568px */
