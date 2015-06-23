@@ -392,7 +392,8 @@ var App = React.createClass({
         this.setState({ 
           isLogin: true, 
           user_id: data.id
-        }); 
+        });
+        this.transitionTo('/');
       }.bind(this),
       error: function(data) {
         $('#login-email').focus();
