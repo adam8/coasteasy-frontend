@@ -44,6 +44,7 @@ function hideMenus() {
 }
 
 
+
 /****** COOKIES *********/
 
 var docCookies = {
@@ -362,10 +363,8 @@ var App = React.createClass({displayName: "App",
         console.log('login success data',data);
         var cookieExpire = 60*60*24*14; // 14 days
         // TODO, make these SECURE only, the last flag should be true...
-        // docCookies.setItem('token', data.token, cookieExpire, '/', 'www.coasteasy.com', true);
-        // docCookies.setItem('user_id', data.id, cookieExpire, '/', 'www.coasteasy.com', true);
-        docCookies.setItem('token', data.token, cookieExpire, '/', 'coasteasy.com');
-        docCookies.setItem('user_id', data.id, cookieExpire, '/', 'coasteasy.com');
+        docCookies.setItem('token', data.token, cookieExpire, '/', 'coasteasy.com', true);
+        docCookies.setItem('user_id', data.id, cookieExpire, '/', 'coasteasy.com', true);
         this.setState({ 
           isLogin: true, 
           user_id: data.id
