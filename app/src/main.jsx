@@ -474,7 +474,7 @@ var App = React.createClass({
       error: function(data) {
         console.log('error');
         $('#new-post-title').focus();
-        $('#new-post-msg').html('here was an error... ugh.');
+        $('#new-post-msg').html('Here is an error... ugh.');
       }.bind(this)
     });
   },
