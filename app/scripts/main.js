@@ -4,7 +4,7 @@ var isLocalHost = false;
 if (document.location.hostname == "localhost") {
   isLocalHost = true;
 } else {
-  //socket = io.connect(); 
+  //socket = io.connect();
 }
 
 
@@ -105,17 +105,18 @@ var docCookies = {
 var LoginButton = React.createClass({displayName: "LoginButton",
   mixins: [Router.State, Navigation],
   handleShowLogin: function(e) {
-    console.log('handleShowLogin');
     e.preventDefault();
     e.stopPropagation();
     this.transitionTo('/login');
-    // document.getElementById("login-form").classList.toggle('div-show-block');
-    // document.getElementById("login-show").classList.toggle('div-show-hide');
   },
   render: function() {
-    return (React.createElement("div", {id: "login"}, 
-      React.createElement("div", {className: "pure-button", id: "login-show", onClick:  this.handleShowLogin, onTouchStart:  this.handleShowLogin}, "Login")
-    ))
+    if (this.props.currentPage !== "login") {
+      return (React.createElement("div", {id: "login"}, 
+        React.createElement("div", {className: "pure-button", id: "login-show", onClick:  this.handleShowLogin, onTouchStart:  this.handleShowLogin}, "Login")
+      ))
+    } else {
+      return null;
+    }
   }
 });
 
@@ -124,8 +125,8 @@ var LogoutButton = React.createClass({displayName: "LogoutButton",
     this.props.handleDoLogout(e);
   },
   render: function() {
-    return (React.createElement("div", {id: "logout", className: "logout", onClick: this.handleDoLogout}, 
-     this.props.user.name, " ", React.createElement("div", {className: "pure-button"}, "Log out")
+    return (React.createElement("div", {id: "logout", className: "logout"}, 
+      React.createElement("div", {onClick: this.handleDoLogout, onTouchStart: this.handleDoLogout, className: "pure-button"}, "Log out")
     ))
   }
 });
@@ -135,32 +136,70 @@ var LoginPage = React.createClass({displayName: "LoginPage",
   handleDoLogin: function(e) {
     this.props.handleDoLogin(e);
   },
-  handleLoginCancel: function(e) {
+  handleCancel: function(e) {
     this.transitionTo('/');
   },
   clearLoginMsg: function(e) {
     $('#login-msg').empty();
   },
   render: function() {
-    return (React.createElement("form", {id: "login-form", className: "pure-form"}, 
-              React.createElement("div", {id: "login-form-inner"}, 
+    return (React.createElement("form", {id: "login-form", className: "content-area pure-form"}, 
+              React.createElement("div", {className: "form-inner"}, 
                 React.createElement("div", null, React.createElement("input", {type: "email", id: "login-email", name: "email", placeholder: "Your email", onChange: this.clearLoginMsg, required: true})), 
                 React.createElement("div", null, React.createElement("input", {type: "password", id: "login-password", placeholder: "Your password", onChange: this.clearLoginMsg, required: true})), 
-                React.createElement("div", {id: "login-form-actions"}, 
-                  React.createElement("div", {id: "login-submit-div"}, 
+                React.createElement("div", {className: "form-actions"}, 
+                  React.createElement("div", {className: "submit-div"}, 
                     React.createElement("input", {className: "pure-button pure-button-primary", type: "submit", id: "login-submit", value: "Log in", onClick: this.handleDoLogin})
                   ), 
-                  React.createElement("div", {id: "login-cancel-div>"}, 
-                    React.createElement("div", {id: "login-cancel", className: "pure-button button-transparent", onTouchStart: this.handleLoginCancel, onClick: this.handleLoginCancel}, "Cancel")
+                  React.createElement("div", {className: "cancel-div>"}, 
+                    React.createElement("div", {className: "pure-button button-transparent", onTouchStart: this.handleCancel, onClick: this.handleCancel}, "Cancel")
                   )
                 ), 
-                React.createElement("div", {id: "login-msg"})
+                React.createElement("div", {className: "form-msg", id: "login-msg"})
               )
             )
   )}
 });
 
-var Posts = React.createClass({displayName: "Posts", 
+var AddPostButton = React.createClass({displayName: "AddPostButton",
+  handleNewPost: function(e) {
+    this.props.handleNewPost(e);
+  },
+  render: function() {
+    return (
+      React.createElement("div", {id: "new-post", className: "pure-button", onClick: this.handleNewPost, onTouchStart: this.handleNewPost}, "Add Post")
+    )
+  }
+});
+
+var NewPostPage = React.createClass({displayName: "NewPostPage",
+  mixins: [Router.State, Navigation],
+  handleAddPost: function(e) {
+    this.props.handleAddPost(e);
+  },
+  handleCancel: function(e) {
+    this.transitionTo('/');
+  },
+  render: function() {
+    return (React.createElement("form", {id: "new-post-form", className: "content-area pure-form"}, 
+              React.createElement("div", {className: "form-inner"}, 
+                React.createElement("div", null, React.createElement("input", {type: "text", id: "new-post-title", name: "title", placeholder: "Title here", required: true})), 
+                React.createElement("div", null, React.createElement("textarea", {id: "new-post-text", name: "text", placeholder: "Details here", required: "required"})), 
+                React.createElement("div", {className: "form-actions"}, 
+                  React.createElement("div", {className: "submit-div"}, 
+                    React.createElement("input", {className: "pure-button pure-button-primary", type: "submit", id: "login-submit", value: "Create New Post", onClick: this.handleAddPost})
+                  ), 
+                  React.createElement("div", {className: "cancel-div>"}, 
+                    React.createElement("div", {className: "pure-button button-transparent", onTouchStart: this.handleCancel, onClick: this.handleCancel}, "Cancel")
+                  )
+                ), 
+                React.createElement("div", {className: "form-msg", id: "new-post-msg"})
+              )
+            )
+  )}
+});
+
+var Posts = React.createClass({displayName: "Posts",
   render: function () {
     if (this.props.posts !== undefined) {
       var posts = this.props.posts;
@@ -174,20 +213,20 @@ var Posts = React.createClass({displayName: "Posts",
         // }
         rows.push(React.createElement(PostItem, {post:  post, key:  post.id}));
         //lastDate = day;
-      }.bind(this)); 
+      }.bind(this));
       return (React.createElement("div", {className: "posts-list"},  rows ));
     } else {
       return (React.createElement("div", {className: "posts-list"}, "No posts found."));
     }
   }
-}); 
+});
 
 {/*
-  var PostDate = React.createClass({ 
+  var PostDate = React.createClass({
   render: function () {
     return (
       <div>date here</div>
-    ); 
+    );
   }
 });
 */}
@@ -212,7 +251,7 @@ var App = React.createClass({displayName: "App",
   contextTypes: {
     router: React.PropTypes.func
   },
-  
+
   getCategoryNameFromSlug: function(slug) {
     if (slug == "my-posts") {
       return "my streams"
@@ -249,25 +288,23 @@ var App = React.createClass({displayName: "App",
       });
     }
   },
-  
-  /*
-  getPosts: function() {
-    //
-  },
-  */
-  
+
   componentWillMount: function() {
     Router.HashLocation.addChangeListener(this.handleChangeRoute);
-    var _this = this;
-    if (isLocalHost == false) {
+    console.log('componentWillMount');
+    var page = this.getPath().split("/")[1];
+    if (page === '') { page = "home"; }
+    this.setState({currentPage:page});
+    // var _this = this;
+    // if (isLocalHost == false) {
       // socket.on("posts", function(data) {
       //     _this.setState({
       //       posts: data
       //     });
       //   });
-    } else {
-      // get data locally in componentDidMount        
-    }
+    // } else {
+      // get data locally in componentDidMount
+    // }
   },
   componentWillUnmount: function() {
     Router.HashLocation.removeChangeListener(this.handleChangeRoute);
@@ -278,11 +315,11 @@ var App = React.createClass({displayName: "App",
     }
     //this.getPosts();
     $.ajax({
-      type: 'GET', 
+      type: 'GET',
       url: 'https://coasteasy.com/api/v1/posts',
       success: function(data) {
         console.log('it worked posts: ',data);
-        this.setState({ 
+        this.setState({
           posts: data
         });
       }.bind(this),
@@ -290,16 +327,16 @@ var App = React.createClass({displayName: "App",
         console.log('error');
       }.bind(this)
     });
-    
+
     if (docCookies.hasItem('token') && docCookies.hasItem('user_id')) {
       $.ajax({
-        type: 'GET', 
+        type: 'GET',
         url: 'https://coasteasy.com/api/v1/users/' + docCookies.getItem('user_id'),
         headers: { 'x-api-token' : docCookies.getItem('token') },
         success: function(data) {
           console.log('it worked data 123',data);
-          this.setState({ 
-            isLogin: true, 
+          this.setState({
+            isLogin: true,
             user: data.user
           });
         }.bind(this),
@@ -311,12 +348,10 @@ var App = React.createClass({displayName: "App",
   },
 
   handleChangeRoute: function() {
-    var path = this.getPath();
-    var first = path.split("/")[0];
-    console.log('handleChangeRoute');
-    console.log('first: ', first);
+    var page = this.getPath().split("/")[1];
+    if (page === '') { page = "home"; }
     this.setState({
-      currentPage: first
+      currentPage: page
       // activeCategory: activeCategory,
       // activePage: activePage,
       // activeHighPriority: activeHighPriority,
@@ -325,7 +360,7 @@ var App = React.createClass({displayName: "App",
       // isList: isList
     });
   },
-  
+
   handleFlagItem: function(item,e) {
     e.preventDefault();
     e.stopPropagation();
@@ -351,7 +386,7 @@ var App = React.createClass({displayName: "App",
           console.log('success flagged data: ',data);
           console.log('todo: add/remove optimistic js to prevent page close');
           $.ajax({
-            type: 'GET', 
+            type: 'GET',
             url: 'https://alpha.stream.vu/flags/' + docCookies.getItem('user_id'),
             headers: { 'x-api-token' : docCookies.getItem('token') },
             success: function(data) {
@@ -372,12 +407,12 @@ var App = React.createClass({displayName: "App",
 
     }
   },
-  
+
   handleDoLogin: function(e) {
     e.preventDefault();
     e.stopPropagation();
     $.ajax({
-      type: 'POST', 
+      type: 'POST',
       url: 'https://coasteasy.com/api/v1/login',
       data: {
         email:$('#login-email').val(),
@@ -389,8 +424,8 @@ var App = React.createClass({displayName: "App",
         // TODO, make these SECURE only, the last flag should be true...
         docCookies.setItem('token', data.token, cookieExpire, '/', 'coasteasy.com', true);
         docCookies.setItem('user_id', data.user.id, cookieExpire, '/', 'coasteasy.com', true);
-        this.setState({ 
-          isLogin: true, 
+        this.setState({
+          isLogin: true,
           user: data.user
         });
         this.transitionTo('/');
@@ -412,42 +447,75 @@ var App = React.createClass({displayName: "App",
     });
     this.transitionTo('/');
   },
-  
+
+  handleNewPost: function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    this.transitionTo('/new-post');
+  },
+
+  handleAddPost: function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    $.ajax({
+      type: 'POST',
+      url: 'https://coasteasy.com/api/v1/posts',
+      data: {
+        title:$('#new-post-title').val(),
+        text:$('#new-post-text').val()
+      },
+      success: function(data) {
+        console.log('login success data',data);
+        // this.setState({
+        //   posts: data
+        // });
+        this.transitionTo('/');
+      }.bind(this),
+      error: function(data) {
+        console.log('error');
+        $('#new-post-title').focus();
+        $('#new-post-msg').html('here was an error... ugh.');
+      }.bind(this)
+    });
+  },
+
   handleGoHome: function(e) {
     e.preventDefault();
     e.stopPropagation();
     this.transitionTo('/');
   },
-  
+
   getInitialState: function() {
-    
+
     if (docCookies.hasItem('token')) {
       var isLogin = true;
     } else {
       var isLogin = false;
     }
-    return { 
+    return {
       posts: [],
       isLogin: isLogin,
       user: {},
       currentPage: ''
     };
   },
-  
+
   render: function () {
     return (
       React.createElement("div", {id: "content-container", className:  "page-" + this.state.currentPage + " login-" + this.state.isLogin}, 
-      
+
         React.createElement("div", {id: "header", onClick: this.handleHeaderClick}, 
-          React.createElement("div", {id: "logo"}, React.createElement("h1", null, React.createElement("a", {href: "/", onClick: this.handleGoHome, onTouchStart: this.handleGoHome}, "Coast Connect"))), 
-           this.state.isLogin === true ? React.createElement(LogoutButton, {handleDoLogout:  this.handleDoLogout, user:  this.state.user}) : React.createElement(LoginButton, {handleDoLogin: this.handleDoLogin})
+          React.createElement("div", {id: "logo"}, React.createElement("h1", null, React.createElement("a", {href: "/", onClick: this.handleGoHome, onTouchStart: this.handleGoHome}, "Coast Easy"))), 
+           this.state.currentPage !== "new-post" ? React.createElement(AddPostButton, {handleNewPost: this.handleNewPost}) : null, 
+           this.state.isLogin === true ? React.createElement(LogoutButton, {handleDoLogout: this.handleDoLogout, user: this.state.user}) : React.createElement(LoginButton, {currentPage: this.state.currentPage, handleDoLogin: this.handleDoLogin})
         ), 
-          
+
         React.createElement(RouteHandler, {
             posts: this.state.posts, 
-            handleDoLogin: this.handleDoLogin}
+            handleDoLogin: this.handleDoLogin, 
+            handleAddPost: this.handleAddPost}
          )
-          
+
       )
     );
   }
@@ -460,15 +528,12 @@ var App = React.createClass({displayName: "App",
 var routes = (
   React.createElement(Route, {name: "home", handler: App, path: "/"}, 
     React.createElement(Route, {name: "LoginPage", handler: LoginPage, path: "login"}), 
+    React.createElement(Route, {name: "NewPostPage", handler: NewPostPage, path: "new-post"}), 
     React.createElement(DefaultRoute, {handler: Posts})
-  ) 
-); 
+  )
+);
 
 // Router.run(routes, Router.HistoryLocation, function (Handler, state) {
 Router.run(routes, function (Handler, state) {
-  React.render(React.createElement(Handler, null), document.getElementById('app')); 
+  React.render(React.createElement(Handler, null), document.getElementById('app'));
 });
-
-
-
-

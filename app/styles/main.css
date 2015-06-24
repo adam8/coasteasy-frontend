@@ -35,7 +35,7 @@ body {
 }
 
 #content-container {
-  
+
 }
 
 #header {
@@ -50,15 +50,24 @@ body {
   background: #f9f9f9;
   border-bottom: 1px solid #f1f1f1;
 }
-#header h1 { 
-  margin:0;padding:0;
+#header h1 {
+  margin: auto;
+  padding: 0;
   line-height: 40px;
+  display: flex;
+  justify-content: left;
+  width: 50px;
 }
-#header h1 a:link, 
-#header h1 a:visited { color: #000; text-decoration: none; }
+#header h1 a:link,
+#header h1 a:visited {
+  display: flex;
+  justify-content: left;
+  color: #000; text-decoration: none;
+}
 
 #logo {
-  flex: 5 1;
+  flex: 1 0 auto;
+  justify-content: left;
 }
 
 #logo a {
@@ -68,6 +77,11 @@ body {
   text-indent: -999999em;
   background: transparent url(https://storage.googleapis.com/static.coastconnect.ca/img/coast-connect.png) no-repeat center left;
   background-size: contain;
+}
+
+#add-post {
+  flex: 0 0 auto;
+  justify-content: right;
 }
 
 #login {
@@ -80,25 +94,41 @@ body {
   display: inline-block;
   margin: auto;
 }
-#login-form {
+
+.content-area {
+  padding-top: 40px;
+}
+
+
+#login-form,
+#new-post-form {
   /*height: calc(100vh - 40px);*/
   height: 100vh;
   display: flex;
   flex-direction: column;
 }
-#login-form-inner {
+.form-inner {
   margin: auto;
+  position: relative;
 }
-#login-form-inner > div {
+.form-inner > div {
   margin: 15px 0;
 }
-#login-form-actions {
+.form-actions {
   display: flex;
 }
 
-#login-submit-div { flex: 5 1; }
-#login-cancel-div { flex: 1 0; }
+.submit-div { flex: 5 1; }
+.cancel-div { flex: 1 0; }
 
+.form-msg {
+  position: absolute;
+  top: 100%;
+}
+.form-msg,
+.form-msg a {
+  color: #B28700;
+}
 
 .posts-list {
   padding: 40px 0 10px 0;
@@ -109,15 +139,12 @@ body {
 }
 .post {
   margin: 0;
-  padding: 10px; 
+  padding: 10px;
   border-bottom: 1px solid #f6f6f6;
 }
 
-
-
 .div-show-block { display: block!important; }
 .div-show-hide { display: none!important; }
-
 
 .button-transparent {
   background: transparent; /* this is a green */
@@ -128,20 +155,17 @@ body {
 
 @media screen and (min-width: 35.5em) {
   /* sm ≥ 568px */
-  
+
 }
 @media screen and (min-width: 48em) {
   /* md ≥ 768px */
-  
+
 }
 @media screen and (min-width: 64em) {
   /* lg ≥ 1024px */
-  
+
 }
 @media screen and (min-width: 80em) {
   /* xl ≥ 1280px */
-  
+
 }
-
-
-
