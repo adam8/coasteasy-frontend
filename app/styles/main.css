@@ -141,6 +141,19 @@ body {
   margin: 0;
   padding: 10px;
   border-bottom: 1px solid #f6f6f6;
+  display: flex;
+}
+.post-info {
+  flex: 2 1 auto;
+}
+.post-vote {
+  flex: 0 0 auto;
+  display: flex;
+}
+.post-vote-btn {
+  margin: auto;
+  text-align: center;
+  display: inline-block;
 }
 
 .div-show-block { display: block!important; }

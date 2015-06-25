@@ -211,7 +211,7 @@ var Posts = React.createClass({
         // if (day !== lastDate) {
         //   rows.push(<PostDate date={date} key={ post.id + randomStr(5) } />);
         // }
-        rows.push(<PostItem post={ post } key={ post.id } />);
+        rows.push(<PostItem post={post} handleVoteUp={this.props.handleVoteUp} key={ post.id } />);
         //lastDate = day;
       }.bind(this));
       return (<div className="posts-list">{ rows }</div>);
@@ -236,11 +236,19 @@ var PostItem = React.createClass({
   contextTypes: {
     router: React.PropTypes.func
   },
+  handleVoteUp: function(e) {
+    this.props.handleVoteUp(e);
+  },
   render: function() {
     return (
       <div className="post">
-        <h2>{ this.props.post.title }</h2>
-        <div>{ this.props.post.title }</div>
+        <div className="post-info">
+          <h2>{ this.props.post.title }</h2>
+          <div>{ this.props.post.title }</div>
+        </div>
+        <div className="post-vote" onTouchStart={this.handleVoteUp} onClick={this.handleVoteUp}>
+          <div className="post-vote-btn pure-button">Vote up</div>
+        </div>
       </div>
     )
   }
@@ -480,6 +488,12 @@ var App = React.createClass({
     });
   },
 
+  handleVoteUp: function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      console.log('vote up');
+  },
+
   handleGoHome: function(e) {
     e.preventDefault();
     e.stopPropagation();
@@ -515,6 +529,7 @@ var App = React.createClass({
             posts={this.state.posts}
             handleDoLogin={this.handleDoLogin}
             handleAddPost={this.handleAddPost}
+            handleVoteUp={this.handleVoteUp}
          />
 
       </div>

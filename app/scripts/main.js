@@ -211,7 +211,7 @@ var Posts = React.createClass({displayName: "Posts",
         // if (day !== lastDate) {
         //   rows.push(<PostDate date={date} key={ post.id + randomStr(5) } />);
         // }
-        rows.push(React.createElement(PostItem, {post:  post, key:  post.id}));
+        rows.push(React.createElement(PostItem, {post: post, handleVoteUp: this.props.handleVoteUp, key:  post.id}));
         //lastDate = day;
       }.bind(this));
       return (React.createElement("div", {className: "posts-list"},  rows ));
@@ -236,11 +236,19 @@ var PostItem = React.createClass({displayName: "PostItem",
   contextTypes: {
     router: React.PropTypes.func
   },
+  handleVoteUp: function(e) {
+    this.props.handleVoteUp(e);
+  },
   render: function() {
     return (
       React.createElement("div", {className: "post"}, 
-        React.createElement("h2", null,  this.props.post.title), 
-        React.createElement("div", null,  this.props.post.title)
+        React.createElement("div", {className: "post-info"}, 
+          React.createElement("h2", null,  this.props.post.title), 
+          React.createElement("div", null,  this.props.post.title)
+        ), 
+        React.createElement("div", {className: "post-vote", onTouchStart: this.handleVoteUp, onClick: this.handleVoteUp}, 
+          React.createElement("div", {className: "post-vote-btn pure-button"}, "Vote up")
+        )
       )
     )
   }
@@ -480,6 +488,12 @@ var App = React.createClass({displayName: "App",
     });
   },
 
+  handleVoteUp: function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      console.log('vote up');
+  },
+
   handleGoHome: function(e) {
     e.preventDefault();
     e.stopPropagation();
@@ -514,7 +528,8 @@ var App = React.createClass({displayName: "App",
         React.createElement(RouteHandler, {
             posts: this.state.posts, 
             handleDoLogin: this.handleDoLogin, 
-            handleAddPost: this.handleAddPost}
+            handleAddPost: this.handleAddPost, 
+            handleVoteUp: this.handleVoteUp}
          )
 
       )
