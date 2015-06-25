@@ -460,6 +460,7 @@ var App = React.createClass({
     $.ajax({
       type: 'POST',
       url: 'https://coasteasy.com/api/v1/posts',
+      headers: { 'x-api-token' : docCookies.getItem('token') },
       data: {
         title:$('#new-post-title').val(),
         text:$('#new-post-text').val()
