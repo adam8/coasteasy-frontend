@@ -522,7 +522,7 @@ var App = React.createClass({
         <div id="header" onClick={this.handleHeaderClick}>
           <div id="logo"><h1><a href="/" onClick={this.handleGoHome} onTouchStart={this.handleGoHome}>Coast Easy</a></h1></div>
           { this.state.currentPage !== "new-post" ? <AddPostButton handleNewPost={this.handleNewPost} /> : null }
-          { this.state.isLogin === true ? <LogoutButton handleDoLogout={this.handleDoLogout} user={this.state.user} /> : <LoginButton currentPage={this.state.currentPage} handleDoLogin={this.handleDoLogin} /> }
+          {/* this.state.isLogin === true ? <LogoutButton handleDoLogout={this.handleDoLogout} user={this.state.user} /> : <LoginButton currentPage={this.state.currentPage} handleDoLogin={this.handleDoLogin} /> */}
         </div>
 
         <RouteHandler

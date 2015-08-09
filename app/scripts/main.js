@@ -521,8 +521,8 @@ var App = React.createClass({displayName: "App",
 
         React.createElement("div", {id: "header", onClick: this.handleHeaderClick}, 
           React.createElement("div", {id: "logo"}, React.createElement("h1", null, React.createElement("a", {href: "/", onClick: this.handleGoHome, onTouchStart: this.handleGoHome}, "Coast Easy"))), 
-           this.state.currentPage !== "new-post" ? React.createElement(AddPostButton, {handleNewPost: this.handleNewPost}) : null, 
-           this.state.isLogin === true ? React.createElement(LogoutButton, {handleDoLogout: this.handleDoLogout, user: this.state.user}) : React.createElement(LoginButton, {currentPage: this.state.currentPage, handleDoLogin: this.handleDoLogin})
+           this.state.currentPage !== "new-post" ? React.createElement(AddPostButton, {handleNewPost: this.handleNewPost}) : null
+          /* this.state.isLogin === true ? <LogoutButton handleDoLogout={this.handleDoLogout} user={this.state.user} /> : <LoginButton currentPage={this.state.currentPage} handleDoLogin={this.handleDoLogin} /> */
         ), 
 
         React.createElement(RouteHandler, {
