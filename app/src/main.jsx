@@ -330,6 +330,10 @@ var App = React.createClass({
         this.setState({
           posts: data
         });
+        var $container = $('#posts');
+        $container.packery({
+          itemSelector: '.post'
+        });
       }.bind(this),
       error: function(data) {
         console.log('error');
@@ -353,6 +357,7 @@ var App = React.createClass({
         }.bind(this)
       });
     }
+    
   },
 
   handleChangeRoute: function() {
