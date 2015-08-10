@@ -142,7 +142,7 @@ body {
   padding: 10px;
   border-bottom: 1px solid #f6f6f6;
   /*display: flex;*/
-  width: 25%;
+  width: 100%;
 }
 .post-info {
   /*flex: 2 1 auto;*/
@@ -167,19 +167,31 @@ body {
   background: rgba(0,0,0,.05); /* this is a green */
 }
 
+@media screen and (min-width: 25em) {
+  /* sm ≥ 400px */
+  .post {
+    width: 50%;
+  }
+}
+
 @media screen and (min-width: 35.5em) {
   /* sm ≥ 568px */
-
 }
 @media screen and (min-width: 48em) {
   /* md ≥ 768px */
-
+  .post {
+    width: 33.33333333%;
+  }
 }
 @media screen and (min-width: 64em) {
   /* lg ≥ 1024px */
-
+  .post {
+     width: 25%; 
+  }
 }
 @media screen and (min-width: 80em) {
   /* xl ≥ 1280px */
-
+  .post {
+     width: 20%; 
+  }
 }
